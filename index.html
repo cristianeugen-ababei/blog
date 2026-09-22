@@ -23,8 +23,20 @@
             --text-main: #0f172a;
             --text-muted: #64748b;
             --border: #e2e8f0;
+            --info-bg: #f8fafc;
             --radius: 12px;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Dark Mode variables */
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --info-bg: #0f172a;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
         }
 
         * {
@@ -32,6 +44,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
         body {
@@ -41,11 +54,60 @@
             padding-bottom: 60px;
         }
 
+        /* Theme & Accent Controls */
+        .controls-bar {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .theme-toggle-btn {
+            background: var(--info-bg);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .color-pickers {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .color-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s ease;
+        }
+
+        .color-dot:hover {
+            transform: scale(1.15);
+        }
+
+        .color-dot.active {
+            border-color: var(--text-main);
+        }
+
         /* Header & Banner */
         header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
-            padding: 60px 20px 40px;
+            padding: 50px 20px 40px;
             text-align: center;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
@@ -58,7 +120,7 @@
 
         header p {
             font-size: 1.1rem;
-            opacity: 0.9;
+            opacity: 0.95;
         }
 
         .badge-erasmus {
@@ -102,7 +164,7 @@
 
         nav button:hover {
             color: var(--primary);
-            background-color: #eff6ff;
+            background-color: var(--info-bg);
         }
 
         nav button.active {
@@ -157,7 +219,7 @@
         }
 
         .info-item {
-            background-color: #f8fafc;
+            background-color: var(--info-bg);
             padding: 16px;
             border-radius: 8px;
             border-left: 4px solid var(--primary);
@@ -201,18 +263,18 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 16px;
-            background-color: #eff6ff;
-            color: var(--primary);
+            padding: 12px 20px;
+            background-color: var(--primary);
+            color: white;
             text-decoration: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: 600;
             margin-top: 10px;
-            transition: background 0.2s;
+            transition: opacity 0.2s ease;
         }
 
         .doc-link:hover {
-            background-color: #dbeafe;
+            opacity: 0.9;
         }
 
         /* Footer */
@@ -225,6 +287,21 @@
     </style>
 </head>
 <body>
+
+    <!-- Controls Bar -->
+    <div class="controls-bar">
+        <div class="color-pickers">
+            <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-right: 4px;">Culoare:</span>
+            <div class="color-dot active" style="background: #2563eb;" onclick="setPrimaryColor('#2563eb', '#1d4ed8', this)"></div>
+            <div class="color-dot" style="background: #10b981;" onclick="setPrimaryColor('#10b981', '#047857', this)"></div>
+            <div class="color-dot" style="background: #8b5cf6;" onclick="setPrimaryColor('#8b5cf6', '#6d28d9', this)"></div>
+            <div class="color-dot" style="background: #f97316;" onclick="setPrimaryColor('#f97316', '#c2410c', this)"></div>
+            <div class="color-dot" style="background: #ef4444;" onclick="setPrimaryColor('#ef4444', '#b91c1c', this)"></div>
+        </div>
+        <button class="theme-toggle-btn" onclick="toggleTheme()">
+            <i class="fa-solid fa-moon" id="theme-icon"></i> <span id="theme-text">Mod Întunecat</span>
+        </button>
+    </div>
 
     <header>
         <h1>Ababei Cristian-Eugen</h1>
@@ -266,7 +343,7 @@
                     </div>
                     <div class="info-item">
                         <h4>Localitate</h4>
-                        <p>Poduri, România</p>
+                        <p>Poduri, Bacău, România</p>
                     </div>
                 </div>
             </div>
@@ -289,7 +366,7 @@
         <!-- Tab: Hobby-uri -->
         <div id="hobby" class="tab-content">
             <div class="card">
-                <h2><i class="fa-solid fa-gamepad"></i> Interese și Pasuni</h2>
+                <h2><i class="fa-solid fa-gamepad"></i> Interese și Pasiuni</h2>
                 <ul class="custom-list">
                     <li><i class="fa-solid fa-music"></i> Muzică și proiecte audio</li>
                     <li><i class="fa-solid fa-laptop-code"></i> Tehnologie și explorarea domeniului IT</li>
@@ -314,12 +391,14 @@
         <!-- Tab: Documente -->
         <div id="documente" class="tab-content">
             <div class="card">
-                <h2><i class="fa-solid fa-file-pdf"></i> Documente Aplicație</h2>
-                <p>Fișiere utile aferente aplicației pentru proiectul Erasmus+:</p>
+                <h2><i class="fa-solid fa-folder-open"></i> Documente Aplicație</h2>
+                <p>Aici poți accesa și descărca documentele aferente aplicației pentru proiectul Erasmus+:</p>
                 <br>
                 <div>
                     <p><strong>Curriculum Vitae (CV Europass)</strong></p>
-                    <a href="#" class="doc-link"><i class="fa-solid fa-download"></i> Descarcă CV</a>
+                    <a href="https://download1326.mediafire.com/udqs90k000bg65iPV2Ba9Xrz1hv4m5zK6dilyJknaPJ414QFaSTUlUEBLd4DXwluOEB2i50UzHMlmYtSV-kT2C6anRYXh8peIb2YDG3oqgPq2V6OYfQdPOl32jp-d8E51d1Y5cavyAmPyJfEiRv3ITLUX8n89_kQ_YCsdkGSOevhBg/z4h0had4w24lzb5/cristian-ababei-1.pdf" target="_blank" class="doc-link">
+                        <i class="fa-solid fa-download"></i> Descarcă CV (PDF)
+                    </a>
                 </div>
             </div>
         </div>
@@ -345,19 +424,40 @@
     <script>
         function openTab(evt, tabName) {
             var i, tabcontent, tablinks;
-            
             tabcontent = document.getElementsByClassName("tab-content");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].classList.remove("active");
             }
-
             tablinks = document.querySelectorAll("nav button");
             for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].classList.remove("active");
             }
-
             document.getElementById(tabName).classList.add("active");
             evt.currentTarget.classList.add("active");
+        }
+
+        function setPrimaryColor(color, darkColor, element) {
+            document.documentElement.style.setProperty('--primary', color);
+            document.documentElement.style.setProperty('--primary-dark', darkColor);
+            
+            document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function toggleTheme() {
+            const body = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeIcon.className = 'fa-solid fa-moon';
+                themeText.textContent = 'Mod Întunecat';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fa-solid fa-sun';
+                themeText.textContent = 'Mod Luminos';
+            }
         }
     </script>
 </body>
